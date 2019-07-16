@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>{{title}}</h1>
+	<div id="toolbar">
+		<h4>Filtros</h4>
+		<form class="row" action="" method="GET">
+			<div class="form-group col-md-2">
+				<label class="control-label" for="id-select-tipo">Tipo de Bovino</label>
+				<select id="id-select-tipo" name="query_tipo" class="form-control">
+						<option value="">Ambos</option>
+						<option value="Cria">De Cria</option>
+						<option value="Engorda">De Engorda</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label" for="id-select-genero">Gênero do Bovino</label>
+				<select id="id-select-genero" name="query_genero" class="form-control">
+						<option value="">Ambos</option>
+						<option value="M">Masculino</option>
+						<option value="F">Feminino</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label" for="id-select-estado">Estado do Bovino</label>
+				<select id="id-select-estado" name="query_estado" class="form-control">
+						<option value="">Todos</option>
+						<option value="Possui">Possui</option>
+						<option value="Vendido">Vendido</option>
+						<option value="Morto">Morto</option>
+				</select>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label" for="id-input-bovino">Buscar Bovino</label>
+				<input class="form-control" type="text" id="id-input-bovino" name="query_search" value="{{ request.GET.query_search }}" placeholder="Brinco">
+			</div>
+			<div class="center-block text-center">
+				<input type="submit" class="btn btn-md btn-primary" name="" value="Filtrar" style="margin:50%;">
+			</div>
+		</form>
+	</div>
+	<div class="row">
+		{% for object in object_list %}
+			<div class="col-md-4">
+				<div class="card mb-4 shadow-sm">
+					{% if object.foto_um %}
+						<img class="bd-placeholder-img card-img-top" width="100%" height="225" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" src="{{ object.foto_um.url }}"></img>
+					{% endif %}
+					<div class="card-body">
+						<div class="card-text">
+							<h5>{{ object.identificacao }}</h5><br/>
+							{{ object.nascimento }} - {{ object.get_age }} Anos<br/>
+						</div>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='{{ object.get_absolute_url }}';">Ver</button>
+								<button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='{{ object.get_absolute_url }}edit/';">Editar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<script type="text/javascript">
+		var getUrlParameter = function getUrlParameter(sParam) {
+			var sPageURL = window.location.search.substring(1),
+			sURLVariables = sPageURL.split('&'),
+			sParameterName,
+			i;
+
+			for (i = 0; i < sURLVariables.length; i++) {
+				sParameterName = sURLVariables[i].split('=');
+
+				if (sParameterName[0] === sParam) {
+					return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+				}
+			}
+		};
+		$(document).ready(function(){
+			tipo	= getUrlParameter('query_tipo');
+			$("#id-select-tipo").val(tipo);
+			genero	= getUrlParameter('query_genero');
+			$("#id-select-genero").val(genero);
+			estado	= getUrlParameter('query_estado');
+			$("#id-select-estado").val(estado);
+		});
+	</script>
+{% endblock content %}

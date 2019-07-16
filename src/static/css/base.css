@@ -1,0 +1,61 @@
+::-moz-selection {
+	color: white;
+	background: #19816d;
+}
+
+::selection {
+	color: white;
+	background: #19816d;
+}
+
+.container {
+	margin-bottom: 40px;
+}
+
+.comment {
+	color:			'#515151';
+	font-size:	14px;
+}
+
+.control-label {
+	font-weight: bold;
+}
+
+.btn-primary {
+	background-color: #19816d;
+	color: #FEFEFE;
+	border-color: #19816d;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:after {
+	background-color: #FEFEFE;
+	color: #19816d;
+	border-color: #19816d;
+}
+
+.container {
+	margin-top: 50px;
+}
+
+.navbar-brand-logo {
+	height: 2.5rem;
+}
+
+.select2-results__option:hover {
+	background-color: #19816d;
+}
+
+#foto {
+	max-width: 50%;
+	width: auto;
+	height: auto;
+	vertical-align: middle;
+	outline: 5px solid #343A40;
+	margin: 50px;
+}
+
+#toolbar {
+	margin-bottom: 50px;
+}

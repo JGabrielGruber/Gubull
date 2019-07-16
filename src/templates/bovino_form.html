@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}
+	{{ title }} | {{ block.super }}
+{% endblock head_title %}
+
+{% block content %}
+	{% load bootstrap3 %}
+
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	{{ form.media.css }}
+	{{ form.media.js }}
+	{{ form_filho.media.css }}
+	{{ form_filho.media.js }}
+	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	{% bootstrap_messages %}
+	<form enctype="multipart/form-data" action="" method="post">
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		<div class="form-group">
+			<label class="control-label" for="peso_table"">Pesagens</label>
+			<table id="peso_table" class="table">
+				<thead>
+					<tr>
+						<th>Peso Kg</th>
+						<th>Data</th>
+						<th>
+							<input class="btn btn-sm btn-secondary" name="modal-toggle" id="id-modal-toggle" value="Adicionar" type="button" data-toggle="modal" data-target="#id-modal" />
+							<div id="id-modal" class="modal" tabindex="-1" role="dialog">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Adicionar Pesagem</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<div class="form-group">
+												<label class="control-label" for="id-modal-peso">Peso em Kg</label>
+												<input type="number" step="any" name="modal-peso" maxlength="255" class="form-control"
+													placeholder="Peso" title="" id="id-modal-peso">
+											</div>
+											<div class="form-group">
+												<label class="control-label" for="id-modal-data">Data</label>
+												<input type="date" name="modal-data" maxlength="255" class="form-control"
+													placeholder="Data" title="" id="id-modal-data">
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" id="id-modal-cancel" data-dismiss="modal">Cancelar</button>
+											<button type="button" class="btn btn-primary" id="id-modal-add">Adicionar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<script type="text/javascript">
+
+				let data = $('#id_nascimento').attr('value');
+				$('#id_nascimento').attr('type', 'date');
+				if (data) {
+					var datearray = data.split("/");
+					var newdate = datearray[2] + '-' + datearray[1] + '-' + datearray[0]
+
+					$('#id_nascimento').val(newdate);
+				}
+
+				var removeByAttr = function(arr, attr, value){
+					var i = arr.length;
+					while(i--){
+						if( arr[i]) {
+							if(arr[i].hasOwnProperty(attr)) {
+								if(arr[i][attr] == value ) {
+									arr.splice(i,1);
+								}
+							}
+						}
+					}
+					return arr;
+				}
+
+				function list() {
+					let lista	= JSON.parse($('#id_peso').val());
+
+					let trHTML = '';
+
+					$.each(lista, function (i, item) {
+						trHTML += '<tr><td>' + item.peso + '</td><td>' + item.data + '</td><td><input class="btn btn-sm btn-danger"id="' + item.id + '" value="Remover" type="button"/></td></tr>';
+					});
+
+					$('#peso_table tbody').remove();
+					$('#peso_table').append('<tbody></tbody>');
+					$('#peso_table').append(trHTML);
+
+					$("#peso_table tbody tr td input").on('click', function() {
+						let id		= $(this).attr('id');
+						let lista	= JSON.parse($('#id_peso').val());
+						lista			= removeByAttr(lista, "id", id);
+						$('#id_peso').val(JSON.stringify(lista));
+						alert("Removido!");
+						list();
+					});
+				}
+
+				function add() {
+					let peso	= $('#id-modal-peso').val();
+					let data	= $('#id-modal-data').val();
+
+					if (peso == "" && data == "") {
+						return 0;
+					}
+
+					let lista	= [];
+					try {
+						lista	= JSON.parse($('#id_peso').val());
+					}
+					catch (e) {
+						lista	= []
+					}
+
+					let id	= lista.length;
+
+					lista.push({
+						"id":		id,
+						"peso":	peso,
+						"data":	data
+					})
+					$('#id_peso').val(JSON.stringify(lista));
+					list();
+					$("#id-modal-cancel").click();
+					$(".modal-backdrop").remove();
+				}
+
+				$("#id-modal-add").on('click', function() {
+					add();
+				});
+
+				$("#id-modal-toggle").on('click', function() {
+					$('#id-modal-peso').val("");
+					$('#id-modal-data').val("");
+				});
+
+				list();
+			</script>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="medicamento_table"">Medicamentos</label>
+			<table id="medicamento_table" class="table">
+				<thead>
+					<tr>
+						<th>Medicamento</th>
+						<th>Data de Aplicação</th>
+						<th>
+							<input class="btn btn-sm btn-secondary" name="modal-med-toggle" id="id-modal-med-toggle" value="Adicionar" type="button" data-toggle="modal" data-target="#id-modal-med" />
+							<div id="id-modal-med" class="modal" tabindex="-1" role="dialog">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Adicionar Pesagem</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<div class="form-group">
+												<label class="control-label" for="id-modal-med-field">Medicamento</label>
+												<input type="text" step="any" name="modal-med-field" maxlength="255" class="form-control"
+													placeholder="Medicamento" title="" id="id-modal-med-field">
+											</div>
+											<div class="form-group">
+												<label class="control-label" for="id-modal-med-data">Data de Aplicação</label>
+												<input type="date" name="modal-med-data" maxlength="255" class="form-control"
+													placeholder="Data" title="" id="id-modal-med-data">
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" id="id-modal-med-cancel" data-dismiss="modal">Cancelar</button>
+											<button type="button" class="btn btn-primary" id="id-modal-med-add">Adicionar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<script type="text/javascript">
+
+				function list_med() {
+					let lista	= JSON.parse($('#id_medicamento').val());
+
+					let trHTML = '';
+
+					$.each(lista, function (i, item) {
+						trHTML += '<tr><td>' + item.medi + '</td><td>' + item.data + '</td><td><input class="btn btn-sm btn-danger"id="' + item.id + '" value="Remover" type="button"/></td></tr>';
+					});
+
+					$('#medicamento_table tbody').remove();
+					$('#medicamento_table').append('<tbody></tbody>');
+					$('#medicamento_table').append(trHTML);
+
+					$("#medicamento_table tbody tr td input").on('click', function() {
+						let id		= $(this).attr('id');
+						let lista	= JSON.parse($('#id_medicamento').val());
+						lista			= removeByAttr(lista, "id", id);
+						$('#id_medicamento').val(JSON.stringify(lista));
+						alert("Removido!");
+						list_med();
+					});
+				}
+
+				function add_med() {
+					let medi	= $('#id-modal-med-field').val();
+					let data	= $('#id-modal-med-data').val();
+
+					if (medi == "" && data == "") {
+						return 0;
+					}
+
+					let lista	= [];
+					try {
+						lista	= JSON.parse($('#id_medicamento').val());
+					}
+					catch (e) {
+						lista	= []
+					}
+
+					let id	= lista.length;
+
+					lista.push({
+						"id":		id,
+						"medi":	medi,
+						"data":	data
+					})
+					$('#id_medicamento').val(JSON.stringify(lista));
+					list_med();
+					$("#id-modal-med-cancel").click();
+					$(".modal-backdrop").remove();
+				}
+
+				$("#id-modal-med-add").on('click', function() {
+					add_med();
+				});
+
+				$("#id-modal-med-toggle").on('click', function() {
+					$('#id-modal-med-field').val("");
+					$('#id-modal-med-data').val("");
+				});
+
+				list_med();
+			</script>
+		</div>
+		{% bootstrap_form form_filho %}
+		{% buttons %}
+			<div class="form-inline my-2 my-lg-0">
+				<button type="submit" name="create" class="btn btn-primary my-2 my-sm-0">
+					Confirmar
+				</button>
+			</div>
+		{% endbuttons %}
+	</form>
+{% endblock content %}

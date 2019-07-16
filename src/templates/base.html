@@ -1,0 +1,75 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="pt-br" class="h-100" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="RATest">
+		<meta name="author" content="JGabriel Gruber">
+		<meta name="theme-color" content="#343A40">
+		<link rel="icon" href="/favicon.ico" sizes="32x32" type="image/x-icon" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png" />
+		<link rel="shortcut icon" type="image/x-icon" sizes="16x16 24x24 32x32 48x48" href="/static/img/favicon.png">
+		<link rel="mask-icon" type="image/x-icon" href="/static/img/favicon.png">
+		<title>{% block head_title %}RATest{% endblock head_title %}</title>
+
+		<style>
+		.bd-placeholder-img {
+			font-size: 1.125rem;
+			text-anchor: middle;
+		}
+
+		@media (min-width: 768px) {
+			.bd-placeholder-img-lg {
+				font-size: 3.5rem;
+			}
+		}
+		</style>
+		{% load bootstrap3 %}
+
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+
+		<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	</head>
+	<body class="d-flex flex-column h-100">
+		<header>
+			<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+				<a class="navbar-brand" href="#">
+					<img class="navbar-brand-logo" src="{% static 'img/RATest_logo_light.png' %}">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="http://{{ request.get_host }}/animais/bovinos">Lista de Bovinos<span class="sr-only">(current)</span></a>
+						</li>
+					</ul>
+					<div class="orm-inline my-2 my-lg-0">
+						<button class="btn btn-primary my-2 my-sm-0" onclick="location.href='http://{{ request.get_host }}/animais/bovinos/create';">Adicionar Bovino</button>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<main role="main" class="flex-shrink-0">
+			<div class="container">
+				{% block content %}
+				{% endblock content %}
+			</div>
+
+		</main>
+		<footer class="footer mt-auto py-3">
+			<div class="container">
+				<p class="float-right">
+					<a href="#" style="color: #212121">Voltar ao topo</a>
+				</p>
+				<p class="text-muted">JGabriel Gruber</p>
+			</div>
+		</footer>
+	</body>
+</html>
