@@ -9,6 +9,7 @@ from .views import bovino_list, bovino_create, bovino_detail, bovino_update, bov
 app_name = 'animais'
 
 urlpatterns = [
+	path('', RedirectView.as_view(url='bovinos/')),
 	path('bovinos/',								bovino_list,	name="list"),
 	path('bovinos/create',							bovino_create,	name="create"),
 	path('bovinos/<slug:identificacao>/',			bovino_detail,	name="detail"),
