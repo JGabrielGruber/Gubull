@@ -37,14 +37,26 @@ $ cd Gubull/
 ```
 $ pip install -r requirements.txt
 ```
-
-### Uso
-Em seu terminal, na pasta do projeto:
-
-1. Navegue na para o src:
+7. Navegue na para o src:
 ```
 $ cd src/
 ```
+8. Crie as migrações do modelos do django:
+```
+$ python manage.py makemigrations
+```
+9. Crie as migrações do modelo animais:
+```
+$ python manage.py makemigrations animais
+```
+9. Realize as migrações:
+```
+$ python manage.py migrate
+```
+
+### Uso
+Em seu terminal, na pasta src do projeto:
+
 2. Inicie o servidor django, com acesso a qualquer IP:
 ```
 $ sudo python manage.py runserver 0.0.0.0:80
