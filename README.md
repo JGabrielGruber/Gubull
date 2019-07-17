@@ -57,7 +57,7 @@ $ python manage.py migrate
 ### Uso
 Em seu terminal, na pasta src do projeto:
 
-2. Inicie o servidor django, com acesso a qualquer IP:
+1. Inicie o servidor django, com acesso a qualquer IP:
 ```
 $ sudo python manage.py runserver 0.0.0.0:80
 ```
