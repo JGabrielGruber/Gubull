@@ -152,7 +152,7 @@
 			trHTML = '';
 
 			$.each(lista_obs, function (i, item) {
-				trHTML += '<tr><td><textarea cols="40" rows="3" disabled>' + item.obs + '</textarea></td><td>' + item.data + '</td></tr>';
+				trHTML += '<tr><td><textarea cols="40" rows="3" onclick="this.focus();this.select()" readonly="readonly" style="color: #212121">' + item.obs + '</textarea></td><td>' + item.data + '</td></tr>';
 			});
 
 			$('#observacao_table tbody').remove();

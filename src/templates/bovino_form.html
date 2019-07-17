@@ -65,9 +65,9 @@
 			<table id="peso_table" class="table">
 				<thead>
 					<tr>
-						<th>Peso Kg</th>
-						<th>Data</th>
-						<th>
+						<th style="width: 50%">Peso Kg</th>
+						<th style="width: 25%">Data</th>
+						<th style="width: 25%">
 							<input class="btn btn-sm btn-secondary" name="modal-toggle" id="id-modal-toggle" value="Adicionar" type="button" data-toggle="modal" data-target="#id-modal" />
 							<div id="id-modal" class="modal" tabindex="-1" role="dialog">
 								<div class="modal-dialog" role="document">
@@ -198,9 +198,9 @@
 			<table id="medicamento_table" class="table">
 				<thead>
 					<tr>
-						<th>Medicamento</th>
-						<th>Data de Aplicação</th>
-						<th>
+						<th style="width: 50%">Medicamento</th>
+						<th style="width: 25%">Data de Aplicação</th>
+						<th style="width: 25%">
 							<input class="btn btn-sm btn-secondary" name="modal-med-toggle" id="id-modal-med-toggle" value="Adicionar" type="button" data-toggle="modal" data-target="#id-modal-med" />
 							<div id="id-modal-med" class="modal" tabindex="-1" role="dialog">
 								<div class="modal-dialog" role="document">
@@ -310,9 +310,9 @@
 			<table id="observacao_table" class="table">
 				<thead>
 					<tr>
-						<th>Observação</th>
-						<th>Data</th>
-						<th>
+						<th style="width: 50%">Observação</th>
+						<th style="width: 25%">Data</th>
+						<th style="width: 25%">
 							<input class="btn btn-sm btn-secondary" name="modal-obs-toggle" id="id-modal-obs-toggle" value="Adicionar" type="button" data-toggle="modal" data-target="#id-modal-obs" />
 							<div id="id-modal-obs" class="modal" tabindex="-1" role="dialog">
 								<div class="modal-dialog" role="document">
@@ -356,7 +356,7 @@
 					let trHTML = '';
 
 					$.each(lista, function (i, item) {
-						trHTML += '<tr><td><textarea cols="40" rows="3" disabled>' + item.obs + '</textarea></td><td>' + item.data + '</td><td><input class="btn btn-sm btn-danger"id="' + item.id + '" value="Remover" type="button"/></td></tr>';
+						trHTML += '<tr><td><textarea cols="40" rows="3"  onclick="this.focus();this.select()" readonly="readonly" style="color: #212121">' + item.obs + '</textarea></td><td>' + item.data + '</td><td><input class="btn btn-sm btn-danger"id="' + item.id + '" value="Remover" type="button"/></td></tr>';
 					});
 
 					$('#observacao_table tbody').remove();
