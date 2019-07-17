@@ -14,6 +14,10 @@
 				</select>
 			</div>
 			<div class="form-group col-md-2">
+				<label class="control-label" for="id-input-lote">Lote do Bovino</label>
+				<input class="form-control" type="text" id="id-input-lote" name="query_lote" value="{{ request.GET.query_lote }}" placeholder="Lote">
+			</div>
+			<div class="form-group col-md-2">
 				<label class="control-label" for="id-select-genero">Gênero do Bovino</label>
 				<select id="id-select-genero" name="query_genero" class="form-control">
 						<option value="">Ambos</option>
@@ -30,7 +34,7 @@
 						<option value="Morto">Morto</option>
 				</select>
 			</div>
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-2">
 				<label class="control-label" for="id-input-bovino">Buscar Bovino</label>
 				<input class="form-control" type="text" id="id-input-bovino" name="query_search" value="{{ request.GET.query_search }}" placeholder="Brinco">
 			</div>

@@ -26,8 +26,10 @@ class BovinoForm(forms.ModelForm):
 		fields = [
 			'identificacao',
 			'tipo',
+			'lote',
 			'peso',
 			'medicamento',
+			'observacao',
 			'nascimento',
 			'genero',
 			'foto_um',
@@ -40,6 +42,7 @@ class BovinoForm(forms.ModelForm):
 		widgets = {
 			'peso'			: forms.HiddenInput(),
 			'medicamento'	: forms.HiddenInput(),
+			'observacao'	: forms.HiddenInput(),
 			'filho'			: forms.HiddenInput()
 		}
 

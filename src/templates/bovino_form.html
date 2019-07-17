@@ -19,6 +19,47 @@
 	<form enctype="multipart/form-data" action="" method="post">
 		{% csrf_token %}
 		{% bootstrap_form form %}
+		<script type="text/javascript">
+			var ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			var UNIQUE_RETRIES = 999;
+			var ID_LENGTH = 8;
+
+			var generate = function() {
+				var rtn = '';
+				for (var i = 0; i < ID_LENGTH; i++) {
+					rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+				}
+				return rtn;
+			}
+
+			var generateUnique = function(previous) {
+				previous = previous || [];
+				var retries = 0;
+				var id;
+
+				while(!id && retries < UNIQUE_RETRIES) {
+					id = generate();
+					console.log(id);
+					if(previous.find(item => item.id === id)) {
+						id = null;
+						retries++;
+					}
+				}
+
+				return id;
+			};
+
+			function compare( a, b ) {
+				if ( a.data < b.data ){
+					return -1;
+				}
+				if ( a.data > b.data ){
+					return 1;
+				}
+				return 0;
+			}
+
+		</script>
 		<div class="form-group">
 			<label class="control-label" for="peso_table"">Pesagens</label>
 			<table id="peso_table" class="table">
@@ -126,13 +167,14 @@
 						lista	= []
 					}
 
-					let id	= lista.length;
-
 					lista.push({
-						"id":		id,
+						"id":	generateUnique(lista),
 						"peso":	peso,
 						"data":	data
-					})
+					});
+
+					lista.sort(compare);
+
 					$('#id_peso').val(JSON.stringify(lista));
 					list();
 					$("#id-modal-cancel").click();
@@ -164,7 +206,7 @@
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title">Adicionar Pesagem</h5>
+											<h5 class="modal-title">Adicionar Medicamento</h5>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
@@ -238,10 +280,13 @@
 					let id	= lista.length;
 
 					lista.push({
-						"id":		id,
+						"id":	generateUnique(lista),
 						"medi":	medi,
 						"data":	data
-					})
+					});
+
+					lista.sort(compare);
+
 					$('#id_medicamento').val(JSON.stringify(lista));
 					list_med();
 					$("#id-modal-med-cancel").click();
@@ -258,6 +303,118 @@
 				});
 
 				list_med();
+			</script>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="observacao_table"">Observações</label>
+			<table id="observacao_table" class="table">
+				<thead>
+					<tr>
+						<th>Observação</th>
+						<th>Data</th>
+						<th>
+							<input class="btn btn-sm btn-secondary" name="modal-obs-toggle" id="id-modal-obs-toggle" value="Adicionar" type="button" data-toggle="modal" data-target="#id-modal-obs" />
+							<div id="id-modal-obs" class="modal" tabindex="-1" role="dialog">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Adicionar Observação</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<div class="form-group">
+												<label class="control-label" for="id-modal-obs-field">Observação</label>
+												<textarea cols="50" rows="10" step="any" name="modal-obs-field" class="form-control"
+													placeholder="Observação" title="" id="id-modal-obs-field" ></textarea>
+											</div>
+											<div class="form-group">
+												<label class="control-label" for="id-modal-obs-data">Data</label>
+												<input type="date" name="modal-obs-data" maxlength="255" class="form-control"
+													placeholder="Data" title="" id="id-modal-obs-data">
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" id="id-modal-obs-cancel" data-dismiss="modal">Cancelar</button>
+											<button type="button" class="btn btn-primary" id="id-modal-obs-add">Adicionar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<script type="text/javascript">
+
+				function list_obs() {
+					let lista	= JSON.parse($('#id_observacao').val());
+
+					let trHTML = '';
+
+					$.each(lista, function (i, item) {
+						trHTML += '<tr><td><textarea cols="40" rows="3" disabled>' + item.obs + '</textarea></td><td>' + item.data + '</td><td><input class="btn btn-sm btn-danger"id="' + item.id + '" value="Remover" type="button"/></td></tr>';
+					});
+
+					$('#observacao_table tbody').remove();
+					$('#observacao_table').append('<tbody></tbody>');
+					$('#observacao_table').append(trHTML);
+
+					$("#observacao_table tbody tr td input").on('click', function() {
+						let id		= $(this).attr('id');
+						let lista	= JSON.parse($('#id_observacao').val());
+						lista			= removeByAttr(lista, "id", id);
+						$('#id_observacao').val(JSON.stringify(lista));
+						alert("Removido!");
+						list_obs();
+					});
+				}
+
+				function add_obs() {
+					let obs	= $('#id-modal-obs-field').val();
+					let data	= $('#id-modal-obs-data').val();
+
+					if (obs == "" && data == "") {
+						return 0;
+					}
+
+					let lista	= [];
+					try {
+						lista	= JSON.parse($('#id_observacao').val());
+					}
+					catch (e) {
+						lista	= []
+					}
+
+					let id	= lista.length;
+
+					lista.push({
+						"id":	generateUnique(lista),
+						"obs":	obs,
+						"data":	data
+					});
+
+					lista.sort(compare);
+
+					$('#id_observacao').val(JSON.stringify(lista));
+					list_obs();
+					$("#id-modal-obs-cancel").click();
+					$(".modal-backdrop").remove();
+				}
+
+				$("#id-modal-obs-add").on('click', function() {
+					add_obs();
+				});
+
+				$("#id-modal-obs-toggle").on('click', function() {
+					$('#id-modal-obs-field').val("");
+					$('#id-modal-obs-data').val("");
+				});
+
+				list_obs();
 			</script>
 		</div>
 		{% bootstrap_form form_filho %}

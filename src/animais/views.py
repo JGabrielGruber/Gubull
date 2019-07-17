@@ -13,11 +13,14 @@ import sys
 def bovino_list(request):
 	queryset_list	= Bovino.objects.all()
 	query_tipo		= request.GET.get("query_tipo")
-	query_genero		= request.GET.get("query_genero")
-	query_estado		= request.GET.get("query_estado")
+	query_lote		= request.GET.get("query_lote")
+	query_genero	= request.GET.get("query_genero")
+	query_estado	= request.GET.get("query_estado")
 	query_search	= request.GET.get("query_search")
 	if query_tipo:
 		queryset_list	= queryset_list.filter(tipo=query_tipo)
+	if query_lote:
+		queryset_list	= queryset_list.filter(lote=query_lote)
 	if query_genero:
 		queryset_list	= queryset_list.filter(genero=query_genero)
 	if query_estado:
