@@ -21,11 +21,13 @@ from django.views import generic
 from django.conf import settings
 from django.conf.urls.static import static
 
-from animais import urls
+from animais import urls as urls_animais
+from arduino import urls as urls_arduino
 
 urlpatterns = [
 	path('favicon.ico', RedirectView.as_view(url='static/img/favicon.ico')),
 	path('', RedirectView.as_view(url='animais/')),
 	path('admin/', admin.site.urls),
-	path('animais/', include(urls, namespace='animais'))
+	path('animais/', include(urls_animais, namespace='animais')),
+	path('arduino/', include(urls_arduino, namespace='arduino'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
