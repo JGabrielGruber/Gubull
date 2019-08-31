@@ -1,14 +1,14 @@
-from django.shortcuts   import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib     import messages
+from django.shortcuts	import render, get_object_or_404, redirect
+from django.http		import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.contrib		import messages
+from django.views.decorators.csrf import csrf_exempt
 
-
-from .forms             import BovinoForm, FilhosForm
-from .models            import Bovino, Filhos
+from .forms				import BovinoForm, FilhosForm
+from .models			import Bovino, Filhos
 
 import logging, logging.config
 import sys
-
+import json
 
 def bovino_list(request):
 	queryset_list	= Bovino.objects.all()
@@ -124,3 +124,15 @@ def bovino_delete(request, identificacao=None):
 	instance	= get_object_or_404(Bovino, identificacao=identificacao)
 	instance.delete()
 	return HttpResponseRedirect("/animais/bovinos")
+
+@csrf_exempt
+def peso_add(request, identificacao=None):
+	instance	= get_object_or_404(Bovino, identificacao=identificacao)
+	form		= BovinoForm(None, None, instance=instance)
+	data		= json.loads(request.body)
+	field		= json.loads(form.instance.peso)
+	field.append(data)
+	print(form)
+	form.instance.peso = json.dumps(field)
+	form.save()
+	return JsonResponse(field, safe=False)

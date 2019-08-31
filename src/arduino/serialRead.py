@@ -23,8 +23,9 @@ def start():
 		start()
 
 hello	= False
+list	= []
 def checkSerial():
-	global hello
+	global hello, list
 	if not hello:
 		device.write("@".encode())
 		sleep(.2)
@@ -33,16 +34,36 @@ def checkSerial():
 			hello	= True
 			sleep(.1)
 	if hello:
-		device.write(str.encode("%"))
+		device.write(str.encode("$"))
 		sleep(.1)
 		response	= device.readline().decode()
-		print(response)
 		if response:
 			if response[0] == "$" and response[-1:] == "$":
 				code	= response[1:-1]
-				print(code)
-				sleep(10)
+				if list and next((item for item in list if item["code"] == code), None):
+					sleep(1)
+					checkSerial()
+			elif response == "#":
 				checkSerial()
+			else:
+				sleep(.1)
+				device.write(str.encode("!"))
+				sleep(.1)
+				hello	= False
+				checkSerial()
+		else:
+			sleep(.1)
+			device.write(str.encode("!"))
+			sleep(.1)
+			hello	= False
+			checkSerial()
+		sleep(.2)
+		device.write(str.encode("%"))
+		sleep(.1)
+		response	= device.readline().decode()
+		if response:
+			if response[0] == "%" and response[-1:] == "%":
+				weight	= response[1:-1]
 			elif response == "#":
 				checkSerial()
 			else:
@@ -60,3 +81,15 @@ def checkSerial():
 	else:
 		sleep(1)
 		checkSerial()
+	if code and weight:
+		list.append({
+			"code": code,
+			"weight": weight
+		})
+		postData()
+		print(list)
+		sleep(1)
+		checkSerial()
+
+def postData():
+	return ""
