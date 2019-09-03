@@ -26,6 +26,9 @@ void setup() {
 
 void loop() {
 	request = Serial.read();
+	if(getPeso()) {
+		ctrlServo(false);
+	}
 	if (request != "-1") {
 		if (!hello && request == "64") {
 			setLed(1);
@@ -54,12 +57,16 @@ void loop() {
 			setLed(3);
 			delay(100); // JÁ FOI PESADO HOJE
 			hello = false;
-			Serial.print("*")
+			Serial.print("*");
+			ctrlServo(true);
+			delay(1000);
 		} else if (request == "111") {
 			setLed(2);
 			delay(100); // DEU BOA!
 			hello = false;
-			Serial.print("*")
+			Serial.print("*");
+			ctrlServo(true);
+			delay(5000);
 		} else {
 			setLed(0);
 		}
