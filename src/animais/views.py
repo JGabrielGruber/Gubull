@@ -131,8 +131,10 @@ def peso_add(request, identificacao=None):
 	form		= BovinoForm(None, None, instance=instance)
 	data		= json.loads(request.body)
 	field		= json.loads(form.instance.peso)
-	field.append(data)
-	print(form)
+	status		= 303
+	if not any(item for item in field if item['data'] == data['data']):
+		field.append(data)
+		status	= 201
 	form.instance.peso = json.dumps(field)
 	form.save()
-	return JsonResponse(field, safe=False)
+	return JsonResponse(field, safe=False, status=status)

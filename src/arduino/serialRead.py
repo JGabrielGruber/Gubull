@@ -1,6 +1,9 @@
-from	time	import sleep
+from	time		import sleep
+from	datetime	import datetime
 import	threading
 import	serial
+import	requests
+import	json
 
 try:
 	device	= serial.Serial('/dev/ttyUSB0', 9600, timeout=.1)
@@ -86,10 +89,22 @@ def checkSerial():
 			"code": code,
 			"weight": weight
 		})
-		postData()
+		status	= postData(code, weight)
+		if status == 303:
+			device.write(str.encode("r"))
+		elif status == 201:
+			device.write(str.encode("o"))
+		else:
+			device.write(str.encode("!"))
+			hello	= False
+		print(status)
 		print(list)
 		sleep(1)
 		checkSerial()
 
-def postData():
-	return ""
+def postData(code, weight):
+	data	= json.dumps({ "peso": str(weight), "data": str(datetime.today().strftime('%Y-%m-%d')) })
+	return requests.post(
+		"http://127.0.0.1:8000/animais/bovinos/" + code + "/peso/",
+		data=data
+	).status_code
