@@ -22,6 +22,8 @@ void setup() {
 	pinMode(SENSOR, INPUT);
 
 	servo.attach(SERVO);
+
+	setLed(0);
 }
 
 void loop() {
