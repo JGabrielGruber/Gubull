@@ -43,8 +43,11 @@ def checkSerial():
 		if response:
 			if response[0] == "$" and response[-1:] == "$":
 				code	= response[1:-1]
-				if list and next((item for item in list if item["code"] == code), None):
-					sleep(1)
+				if code != "":
+					if list and next((item for item in list if item["code"] == code), None):
+						sleep(1)
+						checkSerial()
+				else:
 					checkSerial()
 			elif response == "#":
 				checkSerial()
