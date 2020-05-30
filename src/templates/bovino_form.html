@@ -175,6 +175,13 @@
 
 					lista.sort(compare);
 
+					lista.forEach((item, index) => {
+						if (!Object.values(item).indexOf('id') > -1) {
+							item["id"]	= generateUnique(lista);
+							lista[index]= item;
+						}
+					});
+
 					$('#id_peso').val(JSON.stringify(lista));
 					list();
 					$("#id-modal-cancel").click();
@@ -189,6 +196,28 @@
 					$('#id-modal-peso').val("");
 					$('#id-modal-data').val("");
 				});
+
+				function org() {
+					let lista	= [];
+					try {
+						lista	= JSON.parse($('#id_peso').val());
+					}
+					catch (e) {
+						lista	= []
+					}
+					lista.sort(compare);
+
+					lista.forEach((item, index) => {
+						if (!Object.values(item).indexOf('id') > -1) {
+							item["id"]	= generateUnique(lista);
+							lista[index]= item;
+						}
+					});
+					$('#id_peso').val(JSON.stringify(lista));
+					list();
+				}
+
+				org();
 
 				list();
 			</script>

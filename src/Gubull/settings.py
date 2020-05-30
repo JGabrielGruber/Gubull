@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
 	'animais',
+	'arduino',
 	'bootstrap3',
 	'django_select2',
 	'django.contrib.contenttypes',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'rest_framework',
 ]
 
 MIDDLEWARE = [

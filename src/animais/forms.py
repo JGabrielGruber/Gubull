@@ -45,6 +45,9 @@ class BovinoForm(forms.ModelForm):
 			'observacao'	: forms.HiddenInput(),
 			'filho'			: forms.HiddenInput()
 		}
+	
+	def cleaned_data():
+		return self.cleaned_data 
 
 class FilhosForm(forms.ModelForm):
 	from .models import Bovino
